@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabian Delights Restaurant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #f39c12; /* Gold */
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #bcbcbc;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            margin: 0 5px;
+            border: none;
+            background: transparent;
+            color: #bcbcbc;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: #f39c12; /* Gold */
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-section {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .menu-item {
+            background: linear-gradient(145deg, #333333, #444444);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #f39c12; /* Gold */
+        }
+
+        .menu-item h3 {
+            color: #f39c12; /* Gold */
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .menu-item .price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #e74c3c; /* Red */
+            margin-bottom: 15px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .quantity-btn {
+            background: #f39c12; /* Gold */
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .quantity-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .order-summary {
+            background: #000;
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-summary h3 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .total {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .special-instructions textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+        }
+
+        .special-instructions textarea:focus {
+            outline: none;
+            border-color: #f39c12; /* Gold */
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+        }
+
+        .submit-btn {
+            background: #f39c12; /* Gold */
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(243, 156, 18, 0.3);
+        }
+
+        .order-tracking {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .tracking-input input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .track-btn {
+            background: #f39c12; /* Gold */
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .track-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .status-timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .status-progress {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 4px;
+            background: #f39c12; /* Gold */
+            z-index: 2;
+            transition: width 0.8s ease;
+        }
+
+        .status-step.active {
+            background: #f39c12; /* Gold */
+        }
+
+        .status-step.completed {
+            background: #27ae60; /* Green */
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 Arabian Delights Restaurant</h1>
+            <p>Authentic Middle Eastern Cuisine Delivered to Your Door</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('menu')">📋 Menu</button>
+            <button class="tab-button" onclick="switchTab('tracking')">📦 Track Order</button>
+        </div>
+
+        <div id="menu-tab" class="tab-content active">
+            <div class="menu-section">
+                <div class="menu-grid" id="menuGrid"></div>
+                
+                <div class="order-summary" id="orderSummary" style="display: none;">
+                    <h3>🛒 Your Order</h3>
+                    <div id="orderItems"></div>
+                    <div class="total" id="totalAmount">Total: RM 0.00</div>
+                    
+                    <div class="special-instructions">
+                        <label for="instructions" style="display: block; margin-bottom: 10px; font-weight: bold;">Special Instructions:</label>
+                        <textarea id="instructions" placeholder="Any special requests or dietary requirements..."></textarea>
+                    </div>
+                    
+                    <button class="submit-btn" id="submitOrder" onclick="submitOrder()">
+                        📱 Submit Order via WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tracking-tab" class="tab-content">
+            <div class="order-tracking">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #f39c12;">📦 Track Your Order</h2>
+                
+                <div class="tracking-form">
+                    <div class="tracking-input">
+                        <input type="text" id="orderIdInput" placeholder="Enter your Order ID (e.g., ORD-12345)">
+                        <button class="track-btn" onclick="trackOrder()">Track Order</button>
+                    </div>
+                    
+                    <div style="text-align: center; color: #bcbcbc; font-size: 14px;">
+                        <p>📱 Your Order ID was sent to you via WhatsApp after placing the order</p>
+                    </div>
+                </div>
+
+                <div class="order-status" id="orderStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuItems = [
+            { id: 1, name: "Arabic Salad", price: 6, category: "appetizers" },
+            { id: 2, name: "Beans Fasolia", price: 10, category: "appetizers" },
+            { id: 3, name: "Beef Kebab Sandwich", price: 11, category: "sandwiches" },
+            { id: 4, name: "Falafel Plate", price: 9.9, category: "main" },
+            { id: 5, name: "Falafel Sandwich", price: 5.5, category: "sandwiches" },
+            { id: 6, name: "Fava Beans (Foul) Plate", price: 10, category: "main" },
+            { id: 7, name: "Fahsa Chicken", price: 14, category: "main" },
+            { id: 8, name: "Fahsa Lamb", price: 16, category: "main" },
+            { id: 9, name: "French Fries", price: 6, category: "sides" },
+            { id: 10, name: "French Fries with Cheese", price: 8, category: "sides" },
+            { id: 11, name: "Hummus", price: 10, category: "appetizers" },
+            { id: 12, name: "Kabsa Chicken (Half Quarter)", price: 8, category: "main" },
+            { id: 13, name: "Kabsa Chicken (Quarter)", price: 15, category: "main" },
+            { id: 14, name: "Kabsa Lamb", price: 22, category: "main" },
+            { id: 15, name: "Chicken Kebab Sandwich", price: 9.9, category: "sandwiches" },
+            { id: 16, name: "Kunafa (Dessert)", price: 10, category: "desserts" },
+            { id: 17, name: "Lamb Shank", price: 35, category: "main" },
+            { id: 18, name: "Mandi Chicken (Half Quarter)", price: 6, category: "main" },
+            { id: 19, name: "Mandi Chicken (Quarter)", price: 10.5, category: "main" },
+            { id: 20, name: "Mandi Chicken (Whole Chicken)", price: 35, category: "main" },
+            { id: 21, name: "Areika (Dessert)", price: 15, category: "desserts" },
+            { id: 22, name: "Shawarma Beef", price: 8, category: "sandwiches" },
+            { id: 23, name: "Shawarma Beef with Cheese", price: 9, category: "sandwiches" },
+            { id: 24, name: "Shawarma Chicken", price: 6, category: "sandwiches" },
+            { id: 25, name: "Shawarma Chicken with Cheese", price: 7, category: "sandwiches" },
+            { id: 26, name: "Shawarma Combo (Beef, Chicken, Fries)", price: 14, category: "combos" },
+            { id: 27, name: "Orange Juice", price: 5, category: "beverages" },
+            { id: 28, name: "Apple Juice", price: 5, category: "beverages" },
+            { id: 29, name: "Mango Juice", price: 5, category: "beverages" },
+            { id: 30, name: "Lemon + Mint", price: 5, category: "beverages" },
+            { id: 31, name: "Lemon", price: 4, category: "beverages" },
+            { id: 32, name: "Arabic Tea", price: 3, category: "beverages" },
+            { id: 33, name: "Adeni Tea", price: 4, category: "beverages" },
+            { id: 34, name: "Soft Drinks", price: 3, category: "beverages" },
+            { id: 35, name: "Mineral Water", price: 1, category: "beverages" },
+            { id: 36, name: "Mulawah Bread Small", price: 3, category: "sides" },
+            { id: 37, name: "Mulawah Bread Big", price: 5, category: "sides", isNew: true },
+            { id: 38, name: "Mandi Beef", price: 18, category: "main", isNew: true },
+            { id: 39, name: "Chicken Knot", price: 15, category: "main", isNew: true },
+            { id: 40, name: "Beef Knot", price: 21, category: "main", isNew: true },
+            { id: 41, name: "Masoub Dessert", price: 15, category: "desserts", isNew: true },
+            { id: 42, name: "Dried Beans", price: 17, category: "main", isNew: true }
+        ];
+
+   
+    let cart = {};
+
+    function initializeMenu() {
+        const menuGrid = document.getElementById('menuGrid');
+        menuGrid.innerHTML = '';
+
+        menuItems.forEach(item => {
+            const menuItemDiv = document.createElement('div');
+            menuItemDiv.className = 'menu-item';
+            menuItemDiv.innerHTML = `
+                <h3>${item.name}${item.isNew ? '<span class="new-badge">NEW</span>' : ''}</h3>
+                <div class="price">RM ${item.price.toFixed(2)}</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decreaseQuantity(${item.id})">-</button>
+                    <span class="quantity-display" id="qty-${item.id}">0</span>
+                    <button class="quantity-btn" onclick="increaseQuantity(${item.id})">+</button>
+                </div>
+            `;
+            menuGrid.appendChild(menuItemDiv);
+        });
+    }
+
+    function increaseQuantity(itemId) {
+        if (!cart[itemId]) {
+            cart[itemId] = 0;
+        }
+        cart[itemId]++;
+        updateQuantityDisplay(itemId);
+        updateOrderSummary();
+    }
+
+    function decreaseQuantity(itemId) {
+        if (cart[itemId] && cart[itemId] > 0) {
+            cart[itemId]--;
+            updateQuantityDisplay(itemId);
+            updateOrderSummary();
+        }
+    }
+
+    function updateQuantityDisplay(itemId) {
+        const qtyDisplay = document.getElementById(`qty-${itemId}`);
+        qtyDisplay.textContent = cart[itemId] || 0;
+    }
+
+    function updateOrderSummary() {
+        const orderSummary = document.getElementById('orderSummary');
+        const orderItems = document.getElementById('orderItems');
+        const totalAmount = document.getElementById('totalAmount');
+        
+        if (Object.keys(cart).length === 0) {
+            orderSummary.style.display = 'none'; // Hide order summary if no items in cart
+            return;
+        }
+
+        orderSummary.style.display = 'block'; // Show order summary
+        orderItems.innerHTML = '';
+        let total = 0;
+
+        Object.keys(cart).forEach(itemId => {
+            const item = menuItems.find(m => m.id == itemId);
+            const quantity = cart[itemId];
+            const itemTotal = item.price * quantity;
+            total += itemTotal;
+
+            const orderItem = document.createElement('div');
+            orderItem.className = 'order-item';
+            orderItem.innerHTML = `
+                <span>${item.name} x${quantity}</span>
+                <span>RM ${itemTotal.toFixed(2)}</span>
+            `;
+            orderItems.appendChild(orderItem);
+        });
+
+        totalAmount.textContent = `Total: RM ${total.toFixed(2)}`;
+    }
+
+    function submitOrder() {
+        if (Object.keys(cart).length === 0) {
+            alert('Please select at least one item to order!');
+            return;
+        }
+
+        const orderId = 'ORD-' + Date.now();
+        const instructions = document.getElementById('instructions').value;
+
+        let orderText = `🍽️ *New Order - ${orderId}*\n\n`;
+        orderText += `📋 *Order Details:*\n`;
+
+        let total = 0;
+        Object.keys(cart).forEach(itemId => {
+            const item = menuItems.find(m => m.id == itemId);
+            const quantity = cart[itemId];
+            const itemTotal = item.price * quantity;
+            total += itemTotal;
+            orderText += `• ${item.name} x${quantity} - RM ${itemTotal.toFixed(2)}\n`;
+        });
+
+        orderText += `\n💰 *Total: RM ${total.toFixed(2)}*\n`;
+
+        if (instructions.trim()) {
+            orderText += `\n📝 *Special Instructions:*\n${instructions}\n`;
+        }
+
+        orderText += `\n📦 *Order ID:* ${orderId}`;
+        orderText += `\n🕐 *Order Time:* ${new Date().toLocaleString()}`;
+        orderText += `\n\n✨ Thank you for choosing Arabian Delights! We'll start preparing your order shortly.`;
+
+        const phoneNumber = '60123456789'; // Replace with actual restaurant WhatsApp number
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(orderText)}`;
+
+        cart = {}; // Clear cart after submitting the order
+        document.getElementById('instructions').value = '';
+        updateOrderSummary();
+
+        menuItems.forEach(item => {
+            updateQuantityDisplay(item.id);
+        });
+
+        window.open(whatsappUrl, '_blank');
+        alert(`Order submitted successfully! Your Order ID is: ${orderId}\n\nYou can track your order using this ID.`);
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+        document.getElementById(`${tab}-tab`).classList.add('active');
+    }
+
+    window.onload = initializeMenu;
+</script>
+
+</body>
+</html>
